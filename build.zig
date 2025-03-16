@@ -35,6 +35,7 @@ pub fn build(b: *Build) void {
     cmark_lib.installHeader(b.path("src/cmark-gfm.h"), "cmark-gfm.h");
     cmark_lib.installHeader(b.path("src/cmark-gfm_export.h"), "cmark-gfm_export.h");
     cmark_lib.installHeader(b.path("src/cmark-gfm-extension_api.h"), "cmark-gfm-extension_api.h");
+    cmark_lib.installHeadersDirectory(b.path("extensions"), "extensions", .{});
 
     cmark_lib.addCSourceFiles(.{
         .files = lib_src,
