@@ -31,7 +31,7 @@ pub fn build(b: *Build) void {
             bool,
             "sanitize-thread",
             "enable thread sanitizer",
-        ) orelse (optimize == .Debug),
+        ) orelse false,
     });
     cmark_lib.addConfigHeader(config);
     cmark_lib.addConfigHeader(version);
