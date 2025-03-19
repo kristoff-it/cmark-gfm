@@ -29,7 +29,7 @@ pub fn build(b: *Build) void {
         .link_libc = true,
         .sanitize_thread = b.option(
             bool,
-            "sanitize-thread",
+            "tsan",
             "enable thread sanitizer",
         ) orelse false,
     });
