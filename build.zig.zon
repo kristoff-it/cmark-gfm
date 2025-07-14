@@ -1,0 +1,7 @@
+.{
+    .name = .cmark_gfm,
+    .version = "0.1.0",
+    .fingerprint = 0x9392a2f72b1308b9,
+    .minimum_zig_version = "0.15.0",
+    .paths = .{"."},
+}

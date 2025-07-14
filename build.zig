@@ -22,16 +22,19 @@ pub fn build(b: *Build) void {
         .PROJECT_VERSION_GFM = "13",
     });
 
-    const cmark_lib = b.addStaticLibrary(.{
+    const cmark_lib = b.addLibrary(.{
         .name = "cmark-gfm",
-        .target = target,
-        .optimize = optimize,
-        .link_libc = true,
-        .sanitize_thread = b.option(
-            bool,
-            "tsan",
-            "enable thread sanitizer",
-        ) orelse false,
+        .linkage = .static,
+        .root_module = b.createModule(.{
+            .target = target,
+            .optimize = optimize,
+            .link_libc = true,
+            .sanitize_thread = b.option(
+                bool,
+                "tsan",
+                "enable thread sanitizer",
+            ) orelse false,
+        }),
     });
     cmark_lib.addConfigHeader(config);
     cmark_lib.addConfigHeader(version);
@@ -48,11 +51,14 @@ pub fn build(b: *Build) void {
     });
     b.installArtifact(cmark_lib);
 
-    const cmark_extensions_lib = b.addStaticLibrary(.{
+    const cmark_extensions_lib = b.addLibrary(.{
         .name = "cmark-gfm-extensions",
-        .target = target,
-        .optimize = optimize,
-        .link_libc = true,
+        .linkage = .static,
+        .root_module = b.createModule(.{
+            .target = target,
+            .optimize = optimize,
+            .link_libc = true,
+        }),
     });
     cmark_extensions_lib.installLibraryHeaders(cmark_lib);
     cmark_extensions_lib.addConfigHeader(config);
@@ -75,9 +81,11 @@ pub fn build(b: *Build) void {
 
     const cmark_exe = b.addExecutable(.{
         .name = "cmark-gfm-exe",
-        .target = target,
-        .optimize = optimize,
-        .link_libc = true,
+        .root_module = b.createModule(.{
+            .target = target,
+            .optimize = optimize,
+            .link_libc = true,
+        }),
     });
     cmark_exe.addConfigHeader(config);
     cmark_exe.addConfigHeader(version);
