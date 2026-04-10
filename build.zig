@@ -36,8 +36,8 @@ pub fn build(b: *Build) void {
             ) orelse false,
         }),
     });
-    cmark_lib.addConfigHeader(config);
-    cmark_lib.addConfigHeader(version);
+    cmark_lib.root_module.addConfigHeader(config);
+    cmark_lib.root_module.addConfigHeader(version);
     cmark_lib.installConfigHeader(version);
 
     cmark_lib.installHeader(b.path("src/cmark-gfm.h"), "cmark-gfm.h");
@@ -45,7 +45,7 @@ pub fn build(b: *Build) void {
     cmark_lib.installHeader(b.path("src/cmark-gfm-extension_api.h"), "cmark-gfm-extension_api.h");
     cmark_lib.installHeadersDirectory(b.path("extensions"), "extensions", .{});
 
-    cmark_lib.addCSourceFiles(.{
+    cmark_lib.root_module.addCSourceFiles(.{
         .files = lib_src,
         .flags = &.{"-std=c99"},
     });
@@ -61,8 +61,8 @@ pub fn build(b: *Build) void {
         }),
     });
     cmark_extensions_lib.installLibraryHeaders(cmark_lib);
-    cmark_extensions_lib.addConfigHeader(config);
-    cmark_extensions_lib.addIncludePath(b.path("src"));
+    cmark_extensions_lib.root_module.addConfigHeader(config);
+    cmark_extensions_lib.root_module.addIncludePath(b.path("src"));
     cmark_extensions_lib.installHeader(
         b.path("extensions/cmark-gfm-core-extensions.h"),
         "cmark-gfm-core-extensions.h",
@@ -71,11 +71,11 @@ pub fn build(b: *Build) void {
         b.path("extensions/ext_scanners.h"),
         "ext_scanners.h",
     );
-    cmark_extensions_lib.addCSourceFiles(.{
+    cmark_extensions_lib.root_module.addCSourceFiles(.{
         .files = extensions_src,
         .flags = &.{"-std=c99"},
     });
-    cmark_extensions_lib.linkLibrary(cmark_lib);
+    cmark_extensions_lib.root_module.linkLibrary(cmark_lib);
 
     b.installArtifact(cmark_extensions_lib);
 
@@ -87,13 +87,13 @@ pub fn build(b: *Build) void {
             .link_libc = true,
         }),
     });
-    cmark_exe.addConfigHeader(config);
-    cmark_exe.addConfigHeader(version);
-    cmark_exe.addCSourceFile(.{
+    cmark_exe.root_module.addConfigHeader(config);
+    cmark_exe.root_module.addConfigHeader(version);
+    cmark_exe.root_module.addCSourceFile(.{
         .file = b.path("src/main.c"),
         .flags = &.{"-std=c99"},
     });
-    cmark_exe.linkLibrary(cmark_extensions_lib);
+    cmark_exe.root_module.linkLibrary(cmark_extensions_lib);
     b.installArtifact(cmark_exe);
 }
 
