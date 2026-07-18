@@ -104,7 +104,7 @@ const extensions_src: []const []const u8 = &.{
     "extensions/autolink.c",
     "extensions/tagfilter.c",
     "extensions/ext_scanners.c",
-    "extensions/ext_scanners_re.c",
+    // "extensions/ext_scanners_re.c", // this file actually should not be included
     "extensions/tasklist.c",
 };
 
